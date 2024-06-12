@@ -2,13 +2,10 @@ package com.example.easyfood.ui.navigation
 
 import CategoryDetailScreen
 import StartScreen
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.easyfood.ui.food.DetailScreen
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -17,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -28,22 +24,19 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.easyfood.ui.food.CategoryScreen
 import com.example.easyfood.ui.food.FavouriteScreen
+import com.example.easyfood.ui.food.MakingFood
+import com.example.easyfood.ui.food.NotificationsScreen
 import com.example.easyfood.ui.food.PopularDetailScreen
+import com.example.easyfood.ui.food.ProfileScreen
+import com.example.easyfood.ui.food.RecipeCreation
 import com.example.easyfood.ui.food.RecipeScreen
+import com.example.easyfood.ui.food.SavedScreen
 import com.example.easyfood.ui.food.SearchScreen
 import com.example.easyfood.ui.food.store.SharedViewModel
 
 
-sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
-    object Start : Screen("start", "Start", Icons.Default.Home)
-    object Recipes : Screen("recipes", "Recipes", Icons.Default.Home)
-    object Favorites : Screen("favorites", "Favorites", Icons.Default.Favorite)
-    object Category : Screen("categories", "Categories", Icons.Default.List)
-    object Detail : Screen("detail", "Detail", Icons.Default.List)
-    object PopularDetail : Screen("popular/{idMeal}", "Popular", Icons.Default.List)
-    object CategoryDetailScreen : Screen("category_detail/{categoryName}", "CategoriesDetail", Icons.Default.List)
-    object Search : Screen("search", "Search", Icons.Default.Search)
-}
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun FoodNavApp() {
     val navController = rememberNavController()
@@ -55,7 +48,10 @@ fun FoodNavApp() {
             if (currentRoute?.destination?.route != Screen.Detail.route &&
                 currentRoute?.destination?.route != Screen.PopularDetail.route
                 && currentRoute?.destination?.route != Screen.CategoryDetailScreen.route &&
-                    currentRoute?.destination?.route != Screen.Start.route) {
+                    currentRoute?.destination?.route != Screen.Start.route &&
+                    currentRoute?.destination?.route != Screen.Make.route &&
+                    currentRoute?.destination?.route != Screen.Saved.route &&
+                    currentRoute?.destination?.route != Screen.Create.route)  {
                 BottomNavigationBar(navController)
             }
         }
@@ -70,6 +66,9 @@ fun FoodNavApp() {
             composable(Screen.Start.route) {
             StartScreen(navController = navController)
         }
+            composable(Screen.Make.route) {
+                MakingFood(navController = navController)
+            }
             composable(Screen.Recipes.route) {
                 RecipeScreen(navController = navController, sharedViewModel = sharedViewModel)
             }
@@ -81,7 +80,7 @@ fun FoodNavApp() {
             }
             composable(Screen.PopularDetail.route,arguments = listOf(navArgument("idMeal") { type = NavType.StringType })) { backStackEntry ->
                 val idMeal = backStackEntry.arguments?.getString("idMeal")
-                PopularDetailScreen(idMeal, offlineViewModel = hiltViewModel())
+                PopularDetailScreen(idMeal, offlineViewModel = hiltViewModel(), navController = navController)
             }
             composable(Screen.CategoryDetailScreen.route,
                 arguments = listOf(navArgument("categoryName") { type = NavType.StringType })) { backStackEntry ->
@@ -95,13 +94,26 @@ fun FoodNavApp() {
             composable(Screen.Search.route){
                 SearchScreen(navController =navController)
             }
+
+            composable(Screen.Saved.route){
+                SavedScreen(navController =navController)
+            }
+            composable(Screen.Profile.route){
+                ProfileScreen(navController=navController)
+            }
+            composable(Screen.Create.route){
+                RecipeCreation(navController=navController)
+            }
+            composable(Screen.Notification.route){
+                NotificationsScreen(navController=navController)
+            }
         }
     }
 }
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
-    val items = listOf(Screen.Recipes, Screen.Favorites, Screen.Category)
+    val items = listOf(Screen.Recipes, Screen.Favorites,Screen.Category, Screen.Notification,Screen.Profile,)
     NavigationBar {
         val currentBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = currentBackStackEntry?.destination?.route

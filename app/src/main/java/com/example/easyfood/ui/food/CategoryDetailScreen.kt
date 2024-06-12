@@ -7,7 +7,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -44,6 +48,13 @@ fun CategoryDetailScreen(
     val categoryItems by recipeViewModel.categoryItems.collectAsState(emptyList())
 
     // UI for Category Detail Screen
+    IconButton(onClick = { navController.popBackStack() }) {
+        Icon(
+            imageVector = Icons.Default.ArrowBack,
+            contentDescription = "Back Icon",
+            tint = Color.Black
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,17 +63,14 @@ fun CategoryDetailScreen(
         Text(
             text = " $categoryName (${categoryItems.size.toString()})",
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-            modifier = Modifier.clip(RoundedCornerShape(10.dp)).align(Alignment.CenterHorizontally).padding(bottom = 16.dp)
-                .background(Color.Blue),
-            color = Color.White
+            modifier = Modifier.clip(RoundedCornerShape(10.dp)).align(Alignment.CenterHorizontally).padding(bottom = 16.dp),
+            color = Color.Black
         )
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(8.dp),
-            //verticalArrangement = Arrangement.spacedBy(16.dp),
-            //horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(categoryItems) { meal ->
                 Surface(

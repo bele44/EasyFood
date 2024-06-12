@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.LocationOn
@@ -28,7 +29,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.easyfood.R
@@ -38,7 +42,7 @@ import com.example.easyfood.ui.food.store.RecipeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hiltViewModel(),offlineViewModel: OfflineViewModel) {
+fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hiltViewModel(),offlineViewModel: OfflineViewModel,navController: NavController) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val context = LocalContext.current
 
@@ -52,7 +56,25 @@ fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hilt
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             LargeTopAppBar(
-                title = { Text(text = selectedMeal?.strMeal?: "Detail Screen") },
+
+                title = {
+                    Row(modifier = Modifier.padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "Back Icon",
+                                tint = Color.Black
+                            )
+                        }
+                        Text(
+                            text = selectedMeal?.strMeal?: "Detail Screen",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(bottom = 1.dp)
+                        )
+                    }
+                        },
                 scrollBehavior = scrollBehavior
             )
         },
