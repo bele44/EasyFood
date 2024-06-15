@@ -1,3 +1,120 @@
 <resources>
     <string name="app_name">EasyFood</string>
+    <string name="find_best_recipes">Find best recipes</string>
+    <string name="for_cooking">for cooking</string>
+    <string name="search_recipes">Search recipes...</string>
+    <string name="trending_now">Trending now &#x1F525;</string> <!-- &#x1F525; is the fire emoji -->
+    <string name="see_all">See all</string>
+    <string name="popular_categories">Popular Categories</string>
+    <string name="recent_recipe">Recent Recipe</string>
+    <string name="popular_creators">Popular Creators</string>
+    <string name="seafood_category">Seafood</string>
+
+    <string name="premium_recipes">60k+ Premium recipes</string>
+    <string name="lets">Let\'s</string>
+    <string name="cooking">Cooking</string>
+    <string name="find_best_recipe">find best recipes for cooking</string>
+    <string name="start_cooking">Start Cooking</string>
+
+    <string name="by_salman">by Salman</string>
+
+    <string name="meal_category">Meal Category</string>
+    <string name="loading_categories">Loading categories...</string>
+    <string name="error">Error</string>
+
+    <string name="back_icon">Back Icon</string>
+    <string name="more">More</string>
+    <string name="create_recipe">Create Recipe</string>
+    <string name="select_video">Select Video</string>
+    <string name="meal_name">Meal Name:</string>
+    <string name="serves">Serves:</string>
+    <string name="enter_serves">Enter Serves</string>
+    <string name="cook_time">Cook Time:</string>
+    <string name="enter_cook_time">Enter Cook Time</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="item_name">Item Name</string>
+    <string name="amount">Amount</string>
+    <string name="add_ingredient">Add New Ingredient</string>
+    <string name="save_recipes">Save My Recipes</string>
+    <string name="add_icon">Add Icon</string>
+    <string name="remove_icon">Remove Icon</string>
+
+    <string name="detail_screen">Detail Screen</string>
+    <string name="category_icon">Category Icon</string>
+    <string name="location_icon">Location Icon</string>
+    <string name="category">Category</string>
+    <string name="area">Area</string>
+    <string name="meal_saved">Meal Saved</string>
+    <string name="no_meal_selected">No meal selected</string>
+    <string name="favorite">Favorite</string>
+    <string name="instructions">Instructions</string>
+    <string name="youtube">YouTube</string>
+
+    <string name="my_favorite_meals">My favorite meals</string>
+    <string name="meal_deleted">Meal Deleted</string>
+    <string name="undo">UNDO</string>
+    <string name="no_favorite_meals">No favorite meals available.</string>
+
+    <string name="back">Back</string>
+    <string name="how_to_make_french_toast">How to make French toast</string>
+    <string name="items_count">%d items</string>
+    <string name="bread">Bread</string>
+    <string name="eggs">Eggs</string>
+    <string name="milk">Milk</string>
+    <string name="grams">%dg</string>
+
+    <string name="notifications">Notifications</string>
+    <string name="all">All</string>
+    <string name="unread">Unread</string>
+    <string name="read">Read</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="new_message_title">New Message</string>
+    <string name="new_message_description">You have a new message from Binyam Grmay</string>
+    <string name="order_delivered_title">Order Delivered</string>
+    <string name="order_delivered_description">Your order Shekla Wet has been delivered</string>
+    <string name="promotion_title">Promotion</string>
+    <string name="promotion_description">Get 5% off on your next order</string>
+
+        <string name="na">N/A</string>
+
+    <string name="my_profile">My Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="hello_cooking">Hello world! I love cooking so much</string>
+    <string name="video_creator_bio">from Italy 🇮🇹 Video Creator Bio</string>
+    <string name="tab_videos">Videos</string>
+    <string name="tab_recipes">Recipes</string>
+    <string name="tab_video">Video</string>
+    <string name="profile_name">Alessandra Blair</string>
+
+    <string name="saved_recipes">Saved recipes</string>
+
+    <string name="search_meals">Search Meals...</string>
+
+
+    <string name="time_label">Time</string>
+    <string name="time_value">10 Mins</string>
+    <string name="save">Save</string>
+
+    <string name="play_video">Play Video</string>
+    <string name="star">Star</string>
+    <string name="rating">4.5</string>
+    <string name="duration">14:53</string>
+    <string name="meal_creator"> by bele hagos</string>
+    <string name="how_to_make">How to make %1$s</string>
+    <string name="video_duration">14:53</string>
+    <string name="meal_name_prefix">How to make</string>
+    <string name="created_by">by bele hagos</string>
+
+
+    <string name="rating_reviews">4.5 (300 Reviews)</string>
+    <string name="creator_name">Roberta Anny</string>
+    <string name="location">Addis, Ethiopia</string>
+    <string name="follow">Follow</string>
+
+
+    <string name="views_time"> views | </string>
+
+    <string name="by_author">by bele hagos</string>
+
 </resources>

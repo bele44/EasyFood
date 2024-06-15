@@ -1,44 +1,31 @@
 package com.example.easyfood.ui.food
-
 import android.net.Uri
 import android.widget.VideoView
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.BasicTextField
-
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.easyfood.R
-
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
-import java.io.File
-
 
 @Composable
 fun RecipeCreation(navController: NavController) {
@@ -56,29 +43,26 @@ fun RecipeCreation(navController: NavController) {
         }
     }
 
-        LazyColumn(
+    LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
     ) {
-
         item {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Back button to navigate back
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back Icon",
+                        contentDescription = stringResource(R.string.back_icon),
                         tint = Color.Black
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                // More options icon (for future use or additional options)
                 Icon(
                     painter = painterResource(id = R.drawable.more),
-                    contentDescription = "More",
+                    contentDescription = stringResource(R.string.more),
                     tint = Color.Red,
                     modifier = Modifier.size(25.dp),
                 )
@@ -86,37 +70,40 @@ fun RecipeCreation(navController: NavController) {
         }
 
         item {
-            // Title of the screen
-            Text(text = "Create recipe", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = stringResource(R.string.create_recipe),
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
 
-            item {
-                // Display the selected video if available
-                videoUri?.let { uri ->
-                    AndroidView(
-                        factory = { context ->
-                            VideoView(context).apply {
-                                setVideoURI(uri)
-                                start()
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .height(150.dp)
-                            .border(1.dp, Color.Gray)
-                            .padding(8.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                    )}}
-            item {
-                // Add the Video of the meal by picking a file
-                Button(onClick = { filePickerLauncher.launch("video/*") }) {
-                    Text(text = "Select Video")
-                }
+        item {
+            videoUri?.let { uri ->
+                AndroidView(
+                    factory = { context ->
+                        VideoView(context).apply {
+                            setVideoURI(uri)
+                            start()
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .height(150.dp)
+                        .border(1.dp, Color.Gray)
+                        .padding(8.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                )
             }
+        }
 
         item {
-            // Add the meal name in an outlined text input field
+            Button(onClick = { filePickerLauncher.launch("video/*") }) {
+                Text(text = stringResource(R.string.select_video))
+            }
+        }
+
+        item {
             BasicTextField(
                 value = mealName,
                 onValueChange = { mealName = it },
@@ -128,7 +115,7 @@ fun RecipeCreation(navController: NavController) {
                 decorationBox = { innerTextField ->
                     if (mealName.text.isEmpty()) {
                         Text(
-                            text = "Meal Name: ",
+                            text = stringResource(R.string.meal_name),
                             color = Color.Gray
                         )
                     }
@@ -136,22 +123,19 @@ fun RecipeCreation(navController: NavController) {
                 }
             )
         }
+
         item {
-            // Serves and Cook time texts with an input field for each and an icon before the text
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    // Serves icon
                     Icon(
                         imageVector = Icons.Default.AddCircle,
-                        contentDescription = "Serves Icon",
+                        contentDescription = stringResource(R.string.add_icon),
                         tint = Color.Black,
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    // Serves text
-                    Text("Serves: ")
+                    Text(stringResource(R.string.serves))
                     Spacer(modifier = Modifier.width(8.dp))
-                    // Serves input field
                     BasicTextField(
                         value = serves,
                         onValueChange = { serves = it },
@@ -163,7 +147,7 @@ fun RecipeCreation(navController: NavController) {
                         decorationBox = { innerTextField ->
                             if (serves.text.isEmpty()) {
                                 Text(
-                                    text = "Enter Serves",
+                                    text = stringResource(R.string.enter_serves),
                                     color = Color.Gray
                                 )
                             }
@@ -173,18 +157,15 @@ fun RecipeCreation(navController: NavController) {
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    // Cook time icon
                     Icon(
                         imageVector = Icons.Default.CheckCircle,
-                        contentDescription = "Cook Time Icon",
+                        contentDescription = stringResource(R.string.add_icon),
                         tint = Color.Black,
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    // Cook time text
-                    Text("Cook Time: ")
+                    Text(stringResource(R.string.cook_time))
                     Spacer(modifier = Modifier.width(8.dp))
-                    // Cook time input field
                     BasicTextField(
                         value = cookTime,
                         onValueChange = { cookTime = it },
@@ -196,7 +177,7 @@ fun RecipeCreation(navController: NavController) {
                         decorationBox = { innerTextField ->
                             if (cookTime.text.isEmpty()) {
                                 Text(
-                                    text = "Enter Cook Time",
+                                    text = stringResource(R.string.enter_cook_time),
                                     color = Color.Gray
                                 )
                             }
@@ -208,13 +189,16 @@ fun RecipeCreation(navController: NavController) {
         }
 
         item {
-            // Title of the screen
-            Text(text = "Ingredients", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = stringResource(R.string.ingredients),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
+
         items(ingredients.size) { index ->
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    // Ingredient name input field
                     BasicTextField(
                         value = ingredients[index].first,
                         onValueChange = { newValue ->
@@ -230,7 +214,7 @@ fun RecipeCreation(navController: NavController) {
                         decorationBox = { innerTextField ->
                             if (ingredients[index].first.text.isEmpty()) {
                                 Text(
-                                    text = "Item Name",
+                                    text = stringResource(R.string.item_name),
                                     color = Color.Gray
                                 )
                             }
@@ -238,7 +222,6 @@ fun RecipeCreation(navController: NavController) {
                         }
                     )
 
-                    // Ingredient amount input field
                     BasicTextField(
                         value = ingredients[index].second,
                         onValueChange = { newValue ->
@@ -254,7 +237,7 @@ fun RecipeCreation(navController: NavController) {
                         decorationBox = { innerTextField ->
                             if (ingredients[index].second.text.isEmpty()) {
                                 Text(
-                                    text = "Amount",
+                                    text = stringResource(R.string.amount),
                                     color = Color.Gray
                                 )
                             }
@@ -262,7 +245,6 @@ fun RecipeCreation(navController: NavController) {
                         }
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    // Add/Remove icon
                     IconButton(onClick = {
                         ingredients = ingredients.toMutableList().apply {
                             if (size == index + 1) add(Pair(TextFieldValue(""), TextFieldValue(""))) else removeAt(index)
@@ -270,7 +252,7 @@ fun RecipeCreation(navController: NavController) {
                     }) {
                         Icon(
                             imageVector = if (ingredients.size == index + 1) Icons.Default.Add else Icons.Default.Delete,
-                            contentDescription = if (ingredients.size == index + 1) "Add Icon" else "Remove Icon",
+                            contentDescription = if (ingredients.size == index + 1) stringResource(R.string.add_icon) else stringResource(R.string.remove_icon),
                             tint = if (ingredients.size == index + 1) Color.Green else Color.Red,
                             modifier = Modifier.size(24.dp)
                         )
@@ -278,26 +260,28 @@ fun RecipeCreation(navController: NavController) {
                 }
             }
         }
-        item {
-            // Add new ingredient button
-            Button(colors = ButtonDefaults.buttonColors(Color.White),onClick = {
-                ingredients = ingredients.toMutableList().apply { add(Pair(TextFieldValue(""), TextFieldValue(""))) }
-            }) {
-                Row {
-                    Icon(imageVector = Icons.Default.Add, contentDescription ="add", tint = Color.Black )
-                    Text("Add new Ingredient",color = Color.Black)
-                }
 
+        item {
+            Button(
+                colors = ButtonDefaults.buttonColors(Color.White),
+                onClick = {
+                    ingredients = ingredients.toMutableList().apply { add(Pair(TextFieldValue(""), TextFieldValue(""))) }
+                }
+            ) {
+                Row {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add Icon", tint = Color.Black)
+                    Text(stringResource(R.string.add_ingredient), color = Color.Black)
+                }
             }
         }
+
         item {
-            // Save my recipes button
             Button(
                 onClick = {  },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(Color.Red)
             ) {
-                Text("Save my recipes", color = Color.White)
+                Text(stringResource(R.string.save_recipes), color = Color.White)
             }
         }
     }

@@ -3,7 +3,7 @@ package com.example.easyfood.ui.theme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
 
-val md_theme_light_primary = Color(0xFF6B3DD4)
+val md_theme_light_primary = Color(0xFFB22222)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFE9DDFF)
 val md_theme_light_onPrimaryContainer = Color(0xFF22005D)

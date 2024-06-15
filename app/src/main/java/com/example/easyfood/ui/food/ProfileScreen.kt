@@ -47,6 +47,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -72,14 +73,14 @@ fun ProfileScreen(viewModel: RecipeViewModel = hiltViewModel(),navController:Nav
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "My Profile",
+                    text = stringResource(id = R.string.my_profile),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 1.dp)
                 )
                 FloatingActionButton(
                     onClick = {
-                              navController.navigate("create")
+                        navController.navigate("create")
                     },
                     modifier = Modifier
                         .padding(2.dp)
@@ -87,13 +88,11 @@ fun ProfileScreen(viewModel: RecipeViewModel = hiltViewModel(),navController:Nav
                     containerColor = Color.White
                 ) {
                     Icon(
-
                         painter = painterResource(id = R.drawable.more),
                         contentDescription = "More",
                         tint = Color.Red,
-                        modifier = Modifier.size(25.dp),
-
-                        )
+                        modifier = Modifier.size(25.dp)
+                    )
                 }
             }
 
@@ -104,16 +103,15 @@ fun ProfileScreen(viewModel: RecipeViewModel = hiltViewModel(),navController:Nav
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
-
             ) {
                 Column() {
                     Image(
                         painter = painterResource(id = R.drawable.avatar2__1_),
-                        contentDescription = "Profile Picture"
+                        contentDescription = ""
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Alessandra Blair",
+                        text = stringResource(id = R.string.profile_name),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -121,12 +119,12 @@ fun ProfileScreen(viewModel: RecipeViewModel = hiltViewModel(),navController:Nav
 
                 Spacer(modifier = Modifier.weight(1f))
                 Button(
-                    onClick = {navController.navigate("create") },
+                    onClick = { navController.navigate("create") },
                     colors = ButtonDefaults.buttonColors(Color.White),
                     shape = RoundedCornerShape(12.dp),
                     border = BorderStroke(2.dp, Color.Red),
                 ) {
-                    Text("Edit Profile", color = Color.Red)
+                    Text(stringResource(id = R.string.edit_profile), color = Color.Red)
                 }
             }
         }
@@ -134,13 +132,13 @@ fun ProfileScreen(viewModel: RecipeViewModel = hiltViewModel(),navController:Nav
         // Bio
         item {
             Text(
-                text = " Hello world! I love cooking so much",
+                text = stringResource(id = R.string.hello_cooking),
                 fontSize = 13.sp,
                 color = Color.Gray,
                 modifier = Modifier.padding(top = 4.dp)
             )
             Text(
-                text = "from Italy \uD83C\uDDEE\uD83C\uDDF9 Video Creator Bio",
+                text = stringResource(id = R.string.video_creator_bio),
                 fontSize = 13.sp,
                 color = Color.Gray,
                 modifier = Modifier.padding(start = 4.dp)
@@ -160,91 +158,94 @@ fun ProfileScreen(viewModel: RecipeViewModel = hiltViewModel(),navController:Nav
                 StatItem("Videos", "5")
                 StatItem("Followers", "13")
                 StatItem("Following", "14K")
+
             }
         }
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
-        item {
-            HorizontalDivider(
-                modifier = Modifier.padding(vertical = 8.dp),
-                thickness = 1.dp,
-                color = Color.Gray
-            )
-        }
-        //
-        item {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .background(
-                        color = if (selected == "video") Color.Red else Color.Transparent,
-                        shape = RoundedCornerShape(8.dp)
+                item {
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        thickness = 1.dp,
+                        color = Color.Gray
                     )
-                    .clickable {
-                        selected = "video"
+                }
+                //
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .background(
+                                    color = if (selected == "video") Color.Red else Color.Transparent,
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .clickable {
+                                    selected = "video"
 
-                    })
-            {
-                Text(
-                    text = " Video",
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = if (selected == "video") Color.White else Color.Red,
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .background(
-                        color = if (selected == "Recipes") Color.Red else Color.Transparent,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .clickable {
-                        selected = "Recipes"
-                        navController.navigate("make")
+                                })
+                        {
+                            Text(
+                                text = stringResource(id = R.string.tab_video),
+                                fontSize = 17.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = if (selected == "video") Color.White else Color.Red,
+                            )
+                        }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .background(
+                                    color = if (selected == "Recipes") Color.Red else Color.Transparent,
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .clickable {
+                                    selected = "Recipes"
+                                    navController.navigate("make")
+                                }
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.tab_recipes),
+                                fontSize = 17.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = if (selected == "Recipes") Color.White else Color.Red,
+                            )
+                        }
                     }
-            ) {
+                }
+
+                item { Spacer(modifier = Modifier.height(16.dp)) }
+                // Video thumbnails
+                items(popularItemsState ?: emptyList()) { categoryMeal ->
+                    ProfileVideo(
+                        imageUrl = categoryMeal?.strMealThumb,
+                        mealName = categoryMeal?.strMeal ?: "",
+                        views = "4.7K",
+                        time = "40 min",
+                        navController = navController
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
+        }
+
+        @Composable
+        fun StatItem(label: String, count: String) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = label)
                 Text(
-                    text = " Recipes",
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Bold,
-
-                    color = if (selected == "Recipes") Color.White else Color.Red,
+                    text = count,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
-    }
-
-        item {Spacer(modifier = Modifier.height(16.dp))  }
-        // Video thumbnails
-        items(popularItemsState ?: emptyList()) { categoryMeal ->
-                ProfileVideo(
-                    imageUrl = categoryMeal?.strMealThumb,
-                    mealName = categoryMeal?.strMeal ,
-                    views =   "4.7K",
-                    time =  "40 min",
-                    navController = navController
-                )
-            Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
-    }
-
-
-@Composable
-fun StatItem(label: String, count: String,) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = label)
-        Text(text = count,fontSize = 20.sp,
-            fontWeight = FontWeight.Bold)
-    }
-}
 

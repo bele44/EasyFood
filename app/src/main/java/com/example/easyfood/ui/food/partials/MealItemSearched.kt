@@ -13,9 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
+import com.example.easyfood.R
 import com.example.easyfood.model.Meal
 
 @Composable
@@ -44,7 +46,7 @@ fun MealItemSearched(meal: Meal, navController: NavController) {
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Error")
+                    Text(stringResource(R.string.error))
                 }
             },
             modifier = Modifier

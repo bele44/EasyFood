@@ -11,40 +11,47 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.navigation.NavController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.MaterialTheme
 import com.example.easyfood.ui.navigation.Screen
 import com.example.easyfood.R
 
 @Composable
 fun StartScreen(navController: NavController) {
-    Box(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
     ) {
+        val maxWidth = maxWidth
+        val maxHeight = maxHeight
+        val isLargeScreen = maxWidth > 600.dp || maxHeight > 800.dp
+        val topPadding = if (isLargeScreen) maxHeight * 0.4f else maxHeight * 0.3f
+        val fontSizeLarge = if (isLargeScreen) 36.sp else 24.sp
+        val fontSizeMedium = if (isLargeScreen) 18.sp else 14.sp
+        val buttonPadding = if (isLargeScreen) 30.dp else 16.dp
+
         Image(
             painter = painterResource(id = R.drawable.background),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            //verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,65 +66,63 @@ fun StartScreen(navController: NavController) {
                         imageVector = Icons.Default.Star,
                         contentDescription = null,
                         tint = Color.White,
-                        modifier = Modifier.size(25.dp)
+                        modifier = Modifier.size(if (isLargeScreen) 30.dp else 25.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "60k+ Premium recipes",
+                        text = stringResource(id = R.string.premium_recipes),
                         color = Color.White,
-                        fontSize = 18.sp,
+                        fontSize = fontSizeMedium,
                         fontWeight = FontWeight.Bold
                     )
                 }
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 230.dp)
+                    .padding(top = topPadding)
             ) {
                 Text(
-                    text = "Let's",
+                    text = stringResource(id = R.string.lets),
                     color = Color.White,
-                    fontSize = 36.sp,
+                    fontSize = fontSizeLarge,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "Cooking",
+                    text = stringResource(id = R.string.cooking),
                     color = Color.White,
-                    fontSize = 36.sp,
+                    fontSize = fontSizeLarge,
                     fontWeight = FontWeight.Bold
                 )
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                //verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp)
             ) {
                 Text(
-                    text = "find best recipes for cooking",
+                    text = stringResource(id = R.string.find_best_recipe),
                     color = Color.White,
-                    fontSize = 17.sp,
+                    fontSize = fontSizeMedium,
                     modifier = Modifier.padding(top = 8.dp)
                 )
             }
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 30.dp),
+                    .padding(top = buttonPadding),
                 contentAlignment = Alignment.BottomCenter
             ) {
                 Button(
                     onClick = { navController.navigate(Screen.Recipes.route) },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFB22222)
+                        containerColor = MaterialTheme.colorScheme.primary
                     ),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text("Start Cooking")
+                    Text(stringResource(id = R.string.start_cooking))
                     Icon(
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,

@@ -12,12 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.example.easyfood.R
 import com.example.easyfood.model.Meal
 import com.example.easyfood.ui.food.store.RecipeViewModel
 
@@ -40,7 +42,7 @@ fun SearchScreen(
                         searchQuery = query
                         viewModel.searchMeal(query.text)
                     },
-                    label = { Text("Search Meals...",color = Color.Red) },
+                    label = { Text(stringResource(R.string.search_meals),color = Color.Red) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(70.dp)
@@ -122,7 +124,7 @@ fun MealItem(meal: Meal, navController:NavController) {
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Error")
+                    Text(stringResource(R.string.error))
                 }
             },
             modifier = Modifier

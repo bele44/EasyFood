@@ -33,8 +33,10 @@ import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
 import com.example.easyfood.R
 
+import androidx.compose.ui.res.stringResource
+
 @Composable
-fun ProfileVideo(imageUrl: String?, mealName: String?, views: String, time: String,navController: NavController) {
+fun ProfileVideo(imageUrl: String?, mealName: String?, views: String, time: String, navController: NavController) {
     Column {
 
         Box(
@@ -56,7 +58,6 @@ fun ProfileVideo(imageUrl: String?, mealName: String?, views: String, time: Stri
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-
                     .align(Alignment.TopEnd)
                     .padding(8.dp),
             ) {
@@ -72,15 +73,13 @@ fun ProfileVideo(imageUrl: String?, mealName: String?, views: String, time: Stri
                         .padding(2.dp)
                         .size(30.dp),
                     containerColor = Color.White
-                ){
+                ) {
                     Icon(
-
                         painter = painterResource(id = R.drawable.more),
-                        contentDescription = "More",
+                        contentDescription = stringResource(id = R.string.more),
                         tint = Color.Red,
-                        modifier = Modifier.size(25.dp),
-
-                        )
+                        modifier = Modifier.size(25.dp)
+                    )
                 }
             }
             Row(
@@ -98,34 +97,28 @@ fun ProfileVideo(imageUrl: String?, mealName: String?, views: String, time: Stri
                     modifier = Modifier.size(25.dp)
                 )
                 Text(
-                    text = "4.5",
+                    text = stringResource(id = R.string.rating),
                     color = Color.White,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(start = 4.dp)
                 )
             }
-            Column( modifier = Modifier
-                .align(Alignment.BottomStart)) {
+            Column(modifier = Modifier.align(Alignment.BottomStart)) {
                 Text(
-                    text = mealName?:"",
+                    text = mealName ?: "",
                     fontSize = 12.sp,
                     color = Color.White,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        // .padding(8.dp)
-                        //.background(Color(0x80000000), RoundedCornerShape(4.dp))
                         .padding(horizontal = 4.dp)
                 )
-                Text(text = "$views views | $time",
+                Text(
+                    text = "$views${stringResource(id = R.string.views_time)}$time",
                     fontSize = 12.sp,
                     color = Color.White,
-                    modifier = Modifier
-                        .padding(bottom=8.dp, start = 8.dp))
-
+                    modifier = Modifier.padding(bottom = 8.dp, start = 8.dp)
+                )
             }
-
         }
-
-
     }
 }

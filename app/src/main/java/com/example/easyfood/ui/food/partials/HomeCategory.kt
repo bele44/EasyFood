@@ -32,7 +32,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
 import com.example.easyfood.ui.food.store.RecipeViewModel
+import com.example.easyfood.ui.navigation.Screen
 import com.example.easyfood.utils.truncateText
+
+import androidx.compose.ui.res.stringResource
+import com.example.easyfood.R
 
 @Composable
 fun HomeCategory(
@@ -51,18 +55,15 @@ fun HomeCategory(
             .fillMaxSize()
             .padding(8.dp),
 
-
-       // horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
+        ) {
         items(categoryItems) { meal ->
             Box(
                 contentAlignment = Alignment.BottomCenter,
                 modifier = Modifier
                     .width(140.dp)
                     .padding(8.dp)
-
                     .clickable {
-                        navController.navigate("saved")
+                        navController.navigate(Screen.Saved.route)
                     }
             ) {
                 Surface(
@@ -80,10 +81,7 @@ fun HomeCategory(
                             .clip(RoundedCornerShape(16.dp))
                             .fillMaxSize()
                             .background(Color.LightGray),
-
-                    )
-
-                    {
+                    ) {
                         Spacer(modifier = Modifier.height(60.dp))
                         Text(
                             text = truncateText(meal.strMeal ?: "", 12),
@@ -94,33 +92,36 @@ fun HomeCategory(
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        Row(modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column {
+                                Text(
+                                    text = stringResource(id = R.string.time_label),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.Light,
+                                    modifier = Modifier
+                                        .align(Alignment.Start)
+                                        .padding(start = 8.dp)
+                                )
 
-                            Column() {
-                            Text(
-                                text = "Time",
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Light,
-                                modifier = Modifier
-                                    .align(Alignment.Start)
-                                    .padding(start = 8.dp)
-                            )
-
-                            Text(
-                                text = "10 Mins",
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Medium,
-                                modifier = Modifier
-                                    .align(Alignment.Start)
-                                    .padding(start = 8.dp)
-                            )
+                                Text(
+                                    text = stringResource(id = R.string.time_value),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.Medium,
+                                    modifier = Modifier
+                                        .align(Alignment.Start)
+                                        .padding(start = 8.dp)
+                                )
                             }
                             Icon(
                                 imageVector = Icons.Default.AddCircle,
-                                contentDescription = "Save",
+                                contentDescription = stringResource(id = R.string.save),
                                 tint = Color.Black,
-                                modifier = Modifier.size(30.dp).padding(8.dp)
+                                modifier = Modifier
+                                    .size(30.dp)
+                                    .padding(8.dp)
                             )
                         }
                     }
@@ -140,7 +141,7 @@ fun HomeCategory(
                         }
                     },
                     modifier = Modifier
-                        .offset(y = (-80).dp)  // Adjust this value based on the image height
+                        .offset(y = (-80).dp)
                         .size(90.dp)
                         .clip(RoundedCornerShape(60.dp))
                         .background(Color.LightGray),
@@ -150,3 +151,4 @@ fun HomeCategory(
         }
     }
 }
+

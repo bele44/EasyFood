@@ -41,6 +41,8 @@ import coil.compose.SubcomposeAsyncImage
 import com.example.easyfood.R
 import com.example.easyfood.utils.truncateText
 
+import androidx.compose.ui.res.stringResource
+
 @Composable
 fun MakingProcess(navController: NavController) {
     Column {
@@ -70,13 +72,14 @@ fun MakingProcess(navController: NavController) {
                     context.startActivity(intent)
                 },
                 modifier = Modifier
-                    .align(Alignment.Center).size(40.dp),
+                    .align(Alignment.Center)
+                    .size(40.dp),
                 containerColor = Color.Gray,
                 contentColor = Color.White
             ) {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
-                    contentDescription = "Play Video"
+                    contentDescription = stringResource(id = R.string.play_video)
                 )
             }
 
@@ -88,7 +91,7 @@ fun MakingProcess(navController: NavController) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding( 8.dp)
+                    .padding(8.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Star,
@@ -97,7 +100,7 @@ fun MakingProcess(navController: NavController) {
                     modifier = Modifier.size(25.dp)
                 )
                 Text(
-                    text = "4,5 (300 Reviews)",
+                    text = stringResource(id = R.string.rating_reviews),
                     color = Color.Gray,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(start = 4.dp)
@@ -119,7 +122,7 @@ fun MakingProcess(navController: NavController) {
                 ) {
                     Column {
                         Text(
-                            text = "Roberta Anny",
+                            text = stringResource(id = R.string.creator_name),
                             fontSize = 16.sp,
                             color = Color.Black,
                             modifier = Modifier.padding(start = 4.dp)
@@ -135,7 +138,7 @@ fun MakingProcess(navController: NavController) {
                                 modifier = Modifier.size(25.dp)
                             )
                             Text(
-                                text = "Addis, Ethiopia",
+                                text = stringResource(id = R.string.location),
                                 fontSize = 11.sp,
                                 color = Color.Gray,
                                 modifier = Modifier.padding(start = 4.dp)
@@ -143,14 +146,13 @@ fun MakingProcess(navController: NavController) {
                         }
                     }
                     Button(
-                        onClick = {  },
+                        onClick = { },
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                         modifier = Modifier.padding(start = 4.dp)
                     ) {
-                        Text(text = "Follow", color = Color.White)
+                        Text(text = stringResource(id = R.string.follow), color = Color.White)
                     }
                 }
-
             }
         }
     }

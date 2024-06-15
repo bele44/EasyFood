@@ -114,6 +114,7 @@ fun EasyFoodTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         shapes = Shapes,
-        content = content
+        content = content,
+        typography= typography
     )
 }

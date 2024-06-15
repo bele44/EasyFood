@@ -47,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,6 +55,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.example.easyfood.R
 import com.example.easyfood.ui.food.store.OfflineViewModel
 import com.example.easyfood.utils.truncateText
 import kotlinx.coroutines.launch
@@ -95,10 +97,9 @@ fun FavouriteScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Column() {
-
+                    Column {
                         Text(
-                            text=  "My favorite meals",
+                            text = stringResource(R.string.my_favorite_meals),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                         )
@@ -106,25 +107,20 @@ fun FavouriteScreen(
                 },
             )
         },
-
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             if (error != null) {
-                // Display error message
                 Text(error!!)
             }
 
-
             if (meals.isEmpty()) {
-                Text("No favorite meals available.")
+                Text(stringResource(R.string.no_favorite_meals))
             } else {
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
+                    columns = GridCells.Adaptive(minSize = 128.dp),
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(8.dp),
-                   /* verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)*/
+                    contentPadding = PaddingValues(8.dp)
                 ) {
                     items(meals) { meal ->
                         Surface(
@@ -133,11 +129,9 @@ fun FavouriteScreen(
                                 .fillMaxWidth()
                                 .combinedClickable(
                                     onClick = {
-
                                         navController.navigate("popular/${meal.idMeal}")
                                     },
                                     onLongClick = {
-                                        // Delete the meal on long press
                                         isLongPressed.value = true
                                         offlineViewModel.deleteMeal(meal)
                                     }
@@ -162,7 +156,7 @@ fun FavouriteScreen(
                                             modifier = Modifier.fillMaxSize(),
                                             contentAlignment = Alignment.Center
                                         ) {
-                                            Text("Error")
+                                            Text(stringResource(R.string.error))
                                         }
                                     },
                                     contentDescription = null,

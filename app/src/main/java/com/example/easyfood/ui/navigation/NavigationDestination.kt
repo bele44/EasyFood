@@ -25,4 +25,13 @@ sealed class Screen(val route: String, val label: String, val icon: ImageVector)
     object Profile : Screen("profile", "profile", Icons.Default.AccountCircle)
     object Create : Screen("create", "create", Icons.Default.AccountCircle)
     object Notification : Screen("notification", "notific...", Icons.Default.Notifications)
+
+   /* fun withArgs(vararg args: String): String {
+        return buildString {
+            append(route)
+            args.forEach { arg ->
+                append("/$arg")
+            }
+        }
+    }*/
 }

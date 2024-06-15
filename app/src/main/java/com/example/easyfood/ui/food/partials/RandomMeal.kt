@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
@@ -18,6 +19,8 @@ import coil.compose.SubcomposeAsyncImage
 import com.example.easyfood.model.Meal
 import com.example.easyfood.model.MealList
 import com.example.easyfood.ui.food.store.SharedViewModel
+import androidx.compose.ui.res.stringResource
+import com.example.easyfood.R
 
 @Composable
 fun DisplayMeals(meals: MealList, navController: NavController, sharedViewModel: SharedViewModel) {
@@ -70,7 +73,7 @@ fun MealItem(meal: Meal, navController: NavController, sharedViewModel: SharedVi
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ) {
-                               Text("Error")
+                               Text(stringResource(R.string.error))
                             }
                         },
                         contentScale = ContentScale.Crop,

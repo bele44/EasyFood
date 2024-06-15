@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +30,8 @@ import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.easyfood.model.Category
 import com.example.easyfood.ui.food.store.RecipeViewModel
-
+import androidx.compose.ui.res.stringResource
+import com.example.easyfood.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryScreen(
@@ -46,7 +48,7 @@ fun CategoryScreen(
                 title = {
                     Column() {
                         Text(
-                            text = "Meal Category",
+                            text = stringResource(R.string.meal_category),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                         )
@@ -76,7 +78,7 @@ fun CategoryScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "Loading categories...")
+                Text(text = stringResource(R.string.loading_categories))
             }
         }
     }
@@ -100,7 +102,7 @@ fun CategoryItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(12.dp)
         ) {
             SubcomposeAsyncImage(
                 model = category.strCategoryThumb,
@@ -118,7 +120,7 @@ fun CategoryItem(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Error")
+                        Text(stringResource(R.string.error))
                     }
                 },
                 modifier = Modifier

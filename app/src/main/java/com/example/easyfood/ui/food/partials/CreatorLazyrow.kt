@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.easyfood.ui.navigation.Screen
 
 
 @Composable
@@ -44,7 +45,7 @@ fun CreatorLazyrow(creators: List<Creator>,navController: NavController) {
                     modifier = Modifier
                         .size(60.dp)
                         .clip(CircleShape)
-                        .clickable { navController.navigate("profile") }
+                        .clickable { navController.navigate(Screen.Profile.route) }
                 )
                 Text(
                     text = creator.name,

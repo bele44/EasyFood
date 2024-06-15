@@ -28,6 +28,8 @@ import com.example.easyfood.utils.truncateText
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.text.style.TextAlign
 
+import androidx.compose.ui.res.stringResource
+
 @Composable
 fun ImagePopularMeals(imageUrl: String?, mealName: String?, personImageUrl: String) {
     Column {
@@ -62,13 +64,12 @@ fun ImagePopularMeals(imageUrl: String?, mealName: String?, personImageUrl: Stri
             ) {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
-                    contentDescription = "Play Video"
+                    contentDescription = stringResource(id = R.string.play_video)
                 )
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
             ) {
@@ -78,7 +79,6 @@ fun ImagePopularMeals(imageUrl: String?, mealName: String?, personImageUrl: Stri
                     tint = Color.White,
                     modifier = Modifier.size(25.dp)
                 )
-
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -94,7 +94,7 @@ fun ImagePopularMeals(imageUrl: String?, mealName: String?, personImageUrl: Stri
                     modifier = Modifier.size(25.dp)
                 )
                 Text(
-                    text = "4.5",
+                    text = stringResource(id = R.string.rating),
                     color = Color.White,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(start = 4.dp)
@@ -102,7 +102,7 @@ fun ImagePopularMeals(imageUrl: String?, mealName: String?, personImageUrl: Stri
             }
 
             Text(
-                text = "14:53",
+                text = stringResource(id = R.string.video_duration),
                 fontSize = 12.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
@@ -118,7 +118,7 @@ fun ImagePopularMeals(imageUrl: String?, mealName: String?, personImageUrl: Stri
                 .padding(8.dp)
         ) {
             Text(
-                text = "How to make ${truncateText(mealName ?: "", 10)}",
+                text = stringResource(id = R.string.meal_name_prefix) + " ${truncateText(mealName ?: "", 10)}",
                 fontSize = 14.sp,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
@@ -132,7 +132,7 @@ fun ImagePopularMeals(imageUrl: String?, mealName: String?, personImageUrl: Stri
                         .clip(CircleShape)
                 )
                 Text(
-                    text = " by bele hagos",
+                    text = stringResource(id = R.string.created_by),
                     fontSize = 13.sp,
                     color = Color.Gray,
                     modifier = Modifier.padding(start = 4.dp)

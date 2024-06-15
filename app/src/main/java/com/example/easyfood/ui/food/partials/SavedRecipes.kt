@@ -9,9 +9,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,14 +21,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.example.easyfood.R
 import com.example.easyfood.utils.truncateText
-
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun SavedRecipes(imageUrl: String?, mealName: String?, personImageUrl: String) {
@@ -64,13 +63,12 @@ fun SavedRecipes(imageUrl: String?, mealName: String?, personImageUrl: String) {
             ) {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
-                    contentDescription = "Play Video"
+                    contentDescription = stringResource(id = R.string.play_video)
                 )
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
             ) {
@@ -96,14 +94,14 @@ fun SavedRecipes(imageUrl: String?, mealName: String?, personImageUrl: String) {
                     modifier = Modifier.size(25.dp)
                 )
                 Text(
-                    text = "4.5",
+                    text = stringResource(id = R.string.rating),
                     color = Color.White,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(start = 4.dp)
                 )
             }
             Text(
-                text = "14:53",
+                text = stringResource(id = R.string.video_duration),
                 fontSize = 12.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
@@ -114,39 +112,41 @@ fun SavedRecipes(imageUrl: String?, mealName: String?, personImageUrl: String) {
                     .padding(horizontal = 4.dp, vertical = 2.dp)
             )
         }
-        Row(horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-                .padding( 8.dp)) {
-
-
-        Column(
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(8.dp)
         ) {
-
-            Text(
-                text = "How to make ${truncateText(mealName ?: "", 10)}",
-                fontSize = 14.sp,
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painterResource(id = R.drawable.creater),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(35.dp)
-                        .clip(CircleShape)
-                )
+            Column(
+                modifier = Modifier.padding(8.dp)
+            ) {
                 Text(
-                    text = " by bele hagos",
-                    fontSize = 13.sp,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(start = 4.dp)
+                    text = "${stringResource(id = R.string.how_to_make)} ${truncateText(mealName ?: "", 10)}",
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painter = painterResource(id = R.drawable.creater),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(35.dp)
+                            .clip(CircleShape)
+                    )
+                    Text(
+                        text = stringResource(id = R.string.by_author),
+                        fontSize = 13.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+                }
             }
+            Icon(
+                imageVector = Icons.Default.MoreVert,
+                contentDescription = ""
+            )
         }
-            Icon(imageVector = Icons.Default.MoreVert, contentDescription = "" )
-    }
     }
 }

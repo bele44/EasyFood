@@ -29,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -89,7 +90,8 @@ fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hilt
                             model = selectedMeal?.strMealThumb ?: "",
                             loading = {
                                 Box(
-                                    modifier = Modifier.fillMaxSize()
+                                    modifier = Modifier
+                                        .fillMaxSize()
                                         .clip(RoundedCornerShape(8.dp))
                                         .background(Color.Gray),
                                 contentAlignment = Alignment.Center
@@ -102,7 +104,7 @@ fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hilt
                                     modifier = Modifier.fillMaxSize(),
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    Text("Error")
+                                    Text(stringResource(R.string.error))
                                 }
                             },
                             contentDescription = null,
@@ -125,16 +127,16 @@ fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hilt
                                 horizontalArrangement = Arrangement.SpaceBetween,
                             ) {
                                 Row {
-                                    Icon(Icons.Default.List, contentDescription = "Category Icon")
+                                    Icon(Icons.Default.List, contentDescription = stringResource(R.string.category_icon))
                                     Text(
-                                        text = "Category: ${selectedMeal?.strCategory ?: "N/A"}",
+                                        text = stringResource(R.string.category) + ": ${selectedMeal?.strCategory}",
                                         modifier = Modifier.padding(start = 4.dp)
                                     )
                                 }
                                 Row {
-                                    Icon(Icons.Default.LocationOn, contentDescription = "Location Icon")
+                                    Icon(Icons.Default.LocationOn, contentDescription = stringResource(R.string.location_icon))
                                     Text(
-                                        text = "Area: ${selectedMeal?.strArea ?: "N/A"}",
+                                        text = stringResource(R.string.area) + ": ${selectedMeal?.strArea}",
                                         modifier = Modifier.padding(start = 4.dp)
                                     )
                                 }
@@ -152,7 +154,7 @@ fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hilt
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Favorite,
-                                    contentDescription = "Favorite",
+                                    contentDescription = stringResource(R.string.favorite),
                                     tint = Color.White
                                 )
                             }
@@ -163,7 +165,7 @@ fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hilt
                             modifier = Modifier.padding(16.dp)
                         ) {
                             Text(
-                                text = "Instructions",
+                                text = stringResource(R.string.instructions),
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                             Text(
@@ -190,7 +192,7 @@ fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hilt
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.youtube),
-                            contentDescription = "YouTube",
+                            contentDescription =  stringResource(R.string.youtube),
                             tint = Color.White
                         )
                     }
