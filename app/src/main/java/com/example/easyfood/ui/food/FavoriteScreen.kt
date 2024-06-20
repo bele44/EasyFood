@@ -70,7 +70,6 @@ fun FavouriteScreen(
     val error by offlineViewModel.error.collectAsState()
     val deletedMeal by offlineViewModel.deletedMeal.collectAsState()
     val isLongPressed = remember { mutableStateOf(false) }
-    // Initialize the snackbar host state
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -93,92 +92,111 @@ fun FavouriteScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primary)
+    ) {
+        Column {
+            // TopAppBar
             TopAppBar(
                 title = {
-                    Column {
-                        Text(
-                            text = stringResource(R.string.my_favorite_meals),
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                        )
-                    }
+                    Text(
+                        text = stringResource(R.string.my_favorite_meals),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.headlineLarge,
+                    )
                 },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                modifier = Modifier.height(70.dp),
             )
-        },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            if (error != null) {
-                Text(error!!)
-            }
 
-            if (meals.isEmpty()) {
-                Text(stringResource(R.string.no_favorite_meals))
-            } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 128.dp),
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(8.dp)
-                ) {
-                    items(meals) { meal ->
-                        Surface(
-                            shape = RoundedCornerShape(16.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .combinedClickable(
-                                    onClick = {
-                                        navController.navigate("popular/${meal.idMeal}")
-                                    },
-                                    onLongClick = {
-                                        isLongPressed.value = true
-                                        offlineViewModel.deleteMeal(meal)
-                                    }
-                                )
-                        ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                modifier = Modifier.padding(8.dp),
+            // Content area
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
+            ) {
+                if (error != null) {
+                    Text(error!!)
+                }
+
+                if (meals.isEmpty()) {
+                    Text(stringResource(R.string.no_favorite_meals))
+                } else {
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(minSize = 128.dp),
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(8.dp)
+                    ) {
+                        items(meals) { meal ->
+                            Surface(
+                                shape = RoundedCornerShape(16.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .combinedClickable(
+                                        onClick = {
+                                            navController.navigate("favoriteDetail/${meal.idMeal}")
+                                        },
+                                        onLongClick = {
+                                            isLongPressed.value = true
+                                            offlineViewModel.deleteMeal(meal)
+                                        }
+                                    )
                             ) {
-                                SubcomposeAsyncImage(
-                                    model = meal.strMealThumb ?: "",
-                                    loading = {
-                                        Box(
-                                            modifier = Modifier.fillMaxSize(),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            CircularProgressIndicator()
-                                        }
-                                    },
-                                    error = {
-                                        Box(
-                                            modifier = Modifier.fillMaxSize(),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(stringResource(R.string.error))
-                                        }
-                                    },
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(16.dp))
-                                        .width(120.dp)
-                                        .height(100.dp)
-                                        .background(Color.LightGray),
-                                    contentScale = ContentScale.Crop
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = truncateText(meal.strMeal ?: "", 10),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    fontWeight = FontWeight.Medium,
-                                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                                )
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier.padding(8.dp),
+                                ) {
+                                    SubcomposeAsyncImage(
+                                        model = meal.strMealThumb ?: "",
+                                        loading = {
+                                            Box(
+                                                modifier = Modifier.fillMaxSize(),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                CircularProgressIndicator()
+                                            }
+                                        },
+                                        error = {
+                                            Box(
+                                                modifier = Modifier.fillMaxSize(),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Text(stringResource(R.string.error))
+                                            }
+                                        },
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(16.dp))
+                                            .width(120.dp)
+                                            .height(100.dp)
+                                            .background(Color.LightGray),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text(
+                                        text = truncateText(meal.strMeal ?: "", 10),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        fontWeight = FontWeight.Medium,
+                                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
         }
+
+        // SnackbarHost
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }
+

@@ -2,10 +2,10 @@ package com.example.easyfood.ui.theme
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
-
-val md_theme_light_primary = Color(0xFFB22222)
-val md_theme_light_onPrimary = Color(0xFFFFFFFF)
-val md_theme_light_primaryContainer = Color(0xFFE9DDFF)
+val md_theme_light_button = Color(0xFFB22222)
+val md_theme_light_primary = Color(0xFFFFFFFF)
+val md_theme_light_onPrimary = Color(0xFF1E192B)
+val md_theme_light_primaryContainer = Color(0xFFFFFFFF)
 val md_theme_light_onPrimaryContainer = Color(0xFF22005D)
 val md_theme_light_secondary = Color(0xFF625B71)
 val md_theme_light_onSecondary = Color(0xFFFFFFFF)
@@ -21,7 +21,7 @@ val md_theme_light_onError = Color(0xFFFFFFFF)
 val md_theme_light_onErrorContainer = Color(0xFF410002)
 val md_theme_light_background = Color(0xFFF3FEFF)
 val md_theme_light_onBackground = Color(0xFF002022)
-val md_theme_light_surface = Color(0xFFF3FEFF)
+val md_theme_light_surface = Color(0xFFFFFFFF)
 val md_theme_light_onSurface = Color(0xFF002022)
 val md_theme_light_surfaceVariant = Color(0xFFE7E0EB)
 val md_theme_light_onSurfaceVariant = Color(0xFF49454E)

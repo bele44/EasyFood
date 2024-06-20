@@ -31,13 +31,13 @@ fun RecentRecipe(imageUrl: String?, mealName: String?, navController: NavControl
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+
     ) {
         val maxWidth = maxWidth
         val isLargeScreen = maxWidth > 600.dp
         val imageHeight: Dp = if (isLargeScreen) 130.dp else 100.dp
         val imageWidth: Dp = if (isLargeScreen) 180.dp else 130.dp
-        val fontSize: TextUnit = if (isLargeScreen) 16.sp else 14.sp
+        val fontSize: TextUnit = if (isLargeScreen) 14.sp else 12.sp
 
         Column {
             Box(
@@ -59,9 +59,9 @@ fun RecentRecipe(imageUrl: String?, mealName: String?, navController: NavControl
                     modifier = Modifier
                         .background(Color(0x80000000), RoundedCornerShape(4.dp))
                         .align(Alignment.TopStart)
-                        .padding(8.dp)
+                        //.padding(8.dp)
                 ) {
-                    // Add any additional content here
+
                 }
             }
             Column(

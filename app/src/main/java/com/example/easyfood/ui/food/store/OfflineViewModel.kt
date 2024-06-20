@@ -31,11 +31,32 @@ class OfflineViewModel @Inject constructor(private val offlineRepository: Offlin
 
     private var lastDeletedMeal: Meal? = null
 
+    //
+    private val _offlineMealById = MutableStateFlow<Meal?>(null)
+    val offlineMealById: StateFlow<Meal?> get() = _offlineMealById
+
     init {
         Log.d("OfflineViewModel", "ViewModel initialized, calling getAllMeals")
         getAllMeals()
     }
-
+    fun fetchMealDetails(idMeal: String?) {
+        idMeal?.let { id ->
+            viewModelScope.launch(Dispatchers.IO) {
+                offlineRepository.getMealStream(id)
+                    .catch { e ->
+                        Log.e("OfflineViewModel", "Error fetching meal details: ${e.message}")
+                        reportError("Error fetching meal details: ${e.message}")
+                    }
+                    .collect { meal ->
+                        Log.d("OfflineViewModel", "Meal details fetched: $meal")
+                        _offlineMealById.value = meal
+                    }
+            }
+        } ?: run {
+            Log.e("OfflineViewModel", "Error: idMeal is null")
+            _error.value = "Error: idMeal is null"
+        }
+    }
     private fun getAllMeals() {
         viewModelScope.launch(Dispatchers.IO) {
             offlineRepository.getAllMeals()

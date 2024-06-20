@@ -58,7 +58,7 @@ fun ImagePopularMeals(imageUrl: String?, mealName: String?, personImageUrl: Stri
                 },
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .size(40.dp),
+                    .size(30.dp),
                 containerColor = Color.Gray,
                 contentColor = Color.White
             ) {
@@ -67,40 +67,6 @@ fun ImagePopularMeals(imageUrl: String?, mealName: String?, personImageUrl: Stri
                     contentDescription = stringResource(id = R.string.play_video)
                 )
             }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = "Star",
-                    tint = Color.White,
-                    modifier = Modifier.size(25.dp)
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .background(Color(0x80000000), RoundedCornerShape(4.dp))
-                    .align(Alignment.TopStart)
-                    .padding(8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    contentDescription = "Star",
-                    tint = Color.White,
-                    modifier = Modifier.size(25.dp)
-                )
-                Text(
-                    text = stringResource(id = R.string.rating),
-                    color = Color.White,
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(start = 4.dp)
-                )
-            }
-
             Text(
                 text = stringResource(id = R.string.video_duration),
                 fontSize = 12.sp,

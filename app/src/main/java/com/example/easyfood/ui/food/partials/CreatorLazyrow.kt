@@ -35,7 +35,7 @@ fun CreatorLazyrow(creators: List<Creator>,navController: NavController) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(top= 8.dp, start = 8.dp)
                     .fillMaxSize()
             ) {
                 Image(

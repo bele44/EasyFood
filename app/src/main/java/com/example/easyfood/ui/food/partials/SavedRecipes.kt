@@ -42,9 +42,9 @@ fun SavedRecipes(imageUrl: String?, mealName: String?, personImageUrl: String) {
                 model = imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier
+                modifier = Modifier.fillMaxSize()
                     .height(150.dp)
-                    .width(330.dp)
+                    //.width(345.dp)
             )
             val context = LocalContext.current
             FloatingActionButton(
@@ -66,7 +66,7 @@ fun SavedRecipes(imageUrl: String?, mealName: String?, personImageUrl: String) {
                     contentDescription = stringResource(id = R.string.play_video)
                 )
             }
-            Row(
+           /* Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
@@ -99,7 +99,7 @@ fun SavedRecipes(imageUrl: String?, mealName: String?, personImageUrl: String) {
                     fontSize = 14.sp,
                     modifier = Modifier.padding(start = 4.dp)
                 )
-            }
+            }*/
             Text(
                 text = stringResource(id = R.string.video_duration),
                 fontSize = 12.sp,
@@ -143,10 +143,10 @@ fun SavedRecipes(imageUrl: String?, mealName: String?, personImageUrl: String) {
                     )
                 }
             }
-            Icon(
+            /*Icon(
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = ""
-            )
+            )*/
         }
     }
 }

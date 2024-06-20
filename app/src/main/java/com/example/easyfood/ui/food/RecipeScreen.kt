@@ -1,6 +1,7 @@
 package com.example.easyfood.ui.food
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +30,8 @@ import com.example.easyfood.ui.food.partials.*
 import com.example.easyfood.ui.food.store.RecipeViewModel
 import com.example.easyfood.ui.food.store.SharedViewModel
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import com.example.easyfood.ui.theme.poppinsFontFamily
 
 data class Creator(val imageResId: Int, val name: String)
 
@@ -52,51 +56,61 @@ fun RecipeScreen(
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
     val searchedMealsState by viewModel.searchedMeals.collectAsState()
     val errorState by viewModel.error.collectAsState()
-
-    // State for the selected category
-    var selectedCategory by remember { mutableStateOf<String?>(null) }
-    val mealsByCategoryState by viewModel.categoryItems.collectAsState()
-
     val seafoodCategory = stringResource(R.string.seafood_category)
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Column(modifier = Modifier.padding(8.dp)) {
-                        Text(
-                            text = stringResource(R.string.find_best_recipes),
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(bottom = 1.dp)
-                        )
-                        Text(
-                            text = stringResource(R.string.for_cooking),
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(bottom = 1.dp)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White
-                )
-            )
+    var selectedCategory by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(categoriesState) {
+        if (categoriesState?.isNotEmpty() == true && selectedCategory == null) {
+            val initialCategory = categoriesState?.first()?.strCategory
+            selectedCategory = initialCategory
         }
-    ) { innerPadding ->
+    }
+    Column(modifier = Modifier.fillMaxSize()) {
+        TopAppBar(
+            title = {
+                Column(modifier = Modifier.padding(0.dp)) {
+                    Text(
+                        text = stringResource(R.string.find_best_recipes),
+                        style = MaterialTheme.typography.headlineLarge,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    Text(
+                        text = stringResource(R.string.for_cooking),
+                        style = MaterialTheme.typography.headlineLarge,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            ),
+            //modifier = Modifier.height(97.dp)
+        )
+
+
         BoxWithConstraints(
             modifier = Modifier
-                .padding(innerPadding)
-                .padding(8.dp)
-        ) {
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(0.dp)
+
+
+        )
+        {
             val maxWidth = maxWidth
 
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = if (maxWidth > 600.dp) 16.dp else 8.dp)
             ) {
                 item {
+                    var isFocused by remember { mutableStateOf(false) }
+
                     OutlinedTextField(
                         value = searchQuery,
                         onValueChange = { query ->
@@ -110,15 +124,32 @@ fun RecipeScreen(
                                     contentDescription = stringResource(R.string.search_recipes),
                                     modifier = Modifier.padding(end = 4.dp)
                                 )
-                                Text(stringResource(R.string.search_recipes))
+                                Text(
+                                    text = stringResource(R.string.search_recipes),
+                                    color = if (isFocused) MaterialTheme.colorScheme.onPrimary else Color.Gray,
+                                    style = MaterialTheme.typography.labelMedium,
+                                )
                             }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(70.dp)
-                            .padding(4.dp),
+                            .padding(4.dp)
+                            .onFocusChanged { focusState ->
+                                isFocused = focusState.isFocused
+                            }
+                            .border(
+                                width = 2.dp,
+                                color = if (isFocused) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary,
+                                shape = RoundedCornerShape(50.dp)
+                            )
+                            .padding(2.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+                            focusedContainerColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                            focusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                            disabledBorderColor = Color.Transparent,
+                            errorBorderColor = Color.Transparent
                         ),
                         shape = RoundedCornerShape(50.dp),
                     )
@@ -141,17 +172,19 @@ fun RecipeScreen(
 
                 //  "Trending now" and "See all"
                 item {
-                    Column(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                    Column(modifier = Modifier.fillMaxWidth().padding(0.dp)) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(start = 8.dp)
+                            ) {
                                 Text(
                                     text = stringResource(R.string.trending_now),
-                                    fontSize = 17.sp,
-                                    fontWeight = FontWeight.Bold
+                                    style = MaterialTheme.typography.headlineSmall,
                                 )
                             }
                             Row(
@@ -162,9 +195,8 @@ fun RecipeScreen(
                             ) {
                                 Text(
                                     text = stringResource(R.string.see_all),
-                                    fontSize = 17.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.Red
+                                    color = Color.Red,
+                                    style = MaterialTheme.typography.headlineSmall,
                                 )
                                 Icon(
                                     imageVector = Icons.Default.ArrowForward,
@@ -201,9 +233,8 @@ fun RecipeScreen(
                 item {
                     Text(
                         text = stringResource(R.string.popular_categories),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(8.dp)
+                        modifier = Modifier.padding(8.dp),
+                        style = MaterialTheme.typography.headlineSmall,
                     )
                 }
 
@@ -215,7 +246,7 @@ fun RecipeScreen(
                         items(categoriesState ?: emptyList()) { category ->
                             Box(
                                 modifier = Modifier
-                                    .padding(8.dp)
+                                    .padding(start = 8.dp)
                                     .background(
                                         color = if (selectedCategory == category.strCategory) Color.Red else Color.Transparent,
                                         shape = RoundedCornerShape(8.dp)
@@ -229,8 +260,9 @@ fun RecipeScreen(
                                 Text(
                                     text = category.strCategory,
                                     color = if (selectedCategory == category.strCategory) Color.White else Color.Red,
-                                    fontSize = 16.sp,
-                                    fontWeight = if (selectedCategory == category.strCategory) FontWeight.Bold else FontWeight.Normal
+                                    fontSize = 14.sp,
+                                    fontWeight = if (selectedCategory == category.strCategory) FontWeight.Bold else FontWeight.Normal,
+                                    fontFamily = poppinsFontFamily
                                 )
                             }
                         }
@@ -246,17 +278,19 @@ fun RecipeScreen(
 
                 // Column with "Recent recipe" and "See all"
                 item {
-                    Column(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(start = 8.dp)
+                            ) {
                                 Text(
                                     text = stringResource(R.string.recent_recipe),
-                                    fontSize = 17.sp,
-                                    fontWeight = FontWeight.Bold
+                                    style = MaterialTheme.typography.headlineSmall,
                                 )
                             }
                             Row(
@@ -267,8 +301,7 @@ fun RecipeScreen(
                             ) {
                                 Text(
                                     text = stringResource(R.string.see_all),
-                                    fontSize = 17.sp,
-                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.headlineSmall,
                                     color = Color.Red
                                 )
                                 Icon(
@@ -305,13 +338,16 @@ fun RecipeScreen(
 
                 // over popular creators
                 item {
-                    Column(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(start = 8.dp)
+                            ) {
                                 Text(
                                     text = stringResource(R.string.popular_creators),
                                     fontSize = 17.sp,
@@ -328,7 +364,8 @@ fun RecipeScreen(
                                     text = stringResource(R.string.see_all),
                                     fontSize = 17.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color.Red
+                                    color = Color.Red,
+                                    style = MaterialTheme.typography.headlineSmall,
                                 )
                                 Icon(
                                     imageVector = Icons.Default.ArrowForward,
@@ -346,3 +383,4 @@ fun RecipeScreen(
         }
     }
 }
+

@@ -3,6 +3,7 @@ package com.example.easyfood.ui.food.partials
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,7 +39,6 @@ import androidx.compose.ui.res.stringResource
 @Composable
 fun ProfileVideo(imageUrl: String?, mealName: String?, views: String, time: String, navController: NavController) {
     Column {
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -52,36 +52,29 @@ fun ProfileVideo(imageUrl: String?, mealName: String?, views: String, time: Stri
                 modifier = Modifier
                     .height(150.dp)
                     .fillMaxWidth()
+
             )
             val context = LocalContext.current
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(8.dp),
-            ) {
-                FloatingActionButton(
-                    onClick = {
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://www.youtube.com/watch?v=1IszT_guI08")
-                        )
-                        context.startActivity(intent)
-                    },
-                    modifier = Modifier
-                        .padding(2.dp)
-                        .size(30.dp),
-                    containerColor = Color.White
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.more),
-                        contentDescription = stringResource(id = R.string.more),
-                        tint = Color.Red,
-                        modifier = Modifier.size(25.dp)
+            FloatingActionButton(
+                onClick = {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://www.youtube.com/watch?v=1IszT_guI08")
                     )
-                }
+                    context.startActivity(intent)
+                },
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(40.dp),
+                containerColor = Color.Gray,
+                contentColor = Color.White
+            ) {
+                Icon(
+                    imageVector = Icons.Default.PlayArrow,
+                    contentDescription = stringResource(id = R.string.play_video)
+                )
             }
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier

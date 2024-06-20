@@ -11,8 +11,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
@@ -26,17 +28,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.easyfood.R
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
+import kotlinx.coroutines.launch
 
 enum class NotificationTab { ALL, UNREAD, READ }
 data class Notification(val title: String, val message: String, val isRead: Boolean, val timestamp: LocalDateTime)
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
 @Composable
 fun NotificationsScreen(navController: NavController) {
-    var selectedTab by remember { mutableStateOf(NotificationTab.ALL) }
+    val pagerState = rememberPagerState()
     val notifications = listOf(
         Notification(
             stringResource(R.string.new_message_title),
@@ -55,71 +61,108 @@ fun NotificationsScreen(navController: NavController) {
             stringResource(R.string.promotion_description),
             false,
             LocalDateTime.now().minusDays(1).minusHours(2)
-        )
-    )
-    val filteredNotifications = when (selectedTab) {
-        NotificationTab.ALL -> notifications
-        NotificationTab.UNREAD -> notifications.filter { !it.isRead }
-        NotificationTab.READ -> notifications.filter { it.isRead }
-    }
+        ),
+                Notification(
+                title = "New Friend Request",
+        message = "You have a new food request from John Doe.",
+        isRead = false,
+        timestamp = LocalDateTime.now().minusHours(2)
+    ),
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Notification(
+        title = "Weekly Summary",
+        message = "Your weekly food is ready.",
+        isRead = true,
+        timestamp = LocalDateTime.now().minusDays(1).minusHours(3)
+    )
+    )
+
+    val coroutineScope = rememberCoroutineScope()
+
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary)) {
         TopAppBar(
-            title = { Text(stringResource(R.string.notifications)) },
+            title = { Text(stringResource(R.string.notifications), modifier = Modifier.background(MaterialTheme.colorScheme.primary)
+
+            ) },
         )
-        TabRow(selectedTabIndex = selectedTab.ordinal) {
-            Tab(
-                selected = selectedTab == NotificationTab.ALL,
-                onClick = { selectedTab = NotificationTab.ALL },
-                modifier = Modifier
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(if (selectedTab == NotificationTab.ALL) Color.Red else Color.Transparent)
-                    .padding(8.dp)
-            ) {
-                Text(
-                    stringResource(R.string.all),
-                    color = if (selectedTab == NotificationTab.ALL) Color.White else Color.Black
+        TabRow(
+            selectedTabIndex = pagerState.currentPage,
+            modifier = Modifier.fillMaxWidth(),
+            indicator = { tabPositions ->
+                Box(
+                    Modifier
+                        .tabIndicatorOffset(tabPositions[pagerState.currentPage])
+                        .height(4.dp)
+                        .background(Color.Red)
                 )
             }
-            Tab(
-                selected = selectedTab == NotificationTab.UNREAD,
-                onClick = { selectedTab = NotificationTab.UNREAD },
-                modifier = Modifier
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(if (selectedTab == NotificationTab.UNREAD) Color.Red else Color.Transparent)
-                    .padding(8.dp)
-            ) {
-                Text(
-                    stringResource(R.string.unread),
-                    color = if (selectedTab == NotificationTab.UNREAD) Color.White else Color.Black
-                )
-            }
-            Tab(
-                selected = selectedTab == NotificationTab.READ,
-                onClick = { selectedTab = NotificationTab.READ },
-                modifier = Modifier
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(if (selectedTab == NotificationTab.READ) Color.Red else Color.Transparent)
-                    .padding(8.dp)
-            ) {
-                Text(
-                    stringResource(R.string.read),
-                    color = if (selectedTab == NotificationTab.READ) Color.White else Color.Black
-                )
+        ) {
+            NotificationTab.values().forEachIndexed { index, tab ->
+                Tab(
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.scrollToPage(index)
+                        }
+                    },
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(if (pagerState.currentPage == index) Color.Transparent else Color.Transparent)
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        stringResource(
+                            when (tab) {
+                                NotificationTab.ALL -> R.string.all
+                                NotificationTab.UNREAD -> R.string.unread
+                                NotificationTab.READ -> R.string.read
+                            }
+                        ),
+                        color = if (pagerState.currentPage == index) Color.Red else Color.Black
+                    )
+                }
             }
         }
-        LazyColumn {
-            item {
-                SectionHeader(stringResource(R.string.today))
+        HorizontalPager(
+            count = NotificationTab.values().size,
+            state = pagerState,
+            modifier = Modifier.fillMaxSize()
+        ) { page ->
+            val filteredNotifications = when (NotificationTab.values()[page]) {
+                NotificationTab.ALL -> notifications
+                NotificationTab.UNREAD -> notifications.filter { !it.isRead }
+                NotificationTab.READ -> notifications.filter { it.isRead }
             }
-            items(filteredNotifications.filter { it.timestamp.isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.DAYS)) }) { notification ->
-                NotificationCard(notification = notification)
-            }
-            item {
-                SectionHeader(stringResource(R.string.yesterday))
-            }
-            items(filteredNotifications.filter { it.timestamp.isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).minusDays(1)) && it.timestamp.isBefore(LocalDateTime.now().truncatedTo(ChronoUnit.DAYS)) }) { notification ->
-                NotificationCard(notification = notification)
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize().padding(8.dp),
+                verticalArrangement = Arrangement.spacedBy(1.dp)
+            ) {
+                item {
+                    if (filteredNotifications.any { it.timestamp.isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.DAYS)) }) {
+                        SectionHeader(stringResource(R.string.today))
+                    }
+                }
+                items(filteredNotifications.filter { it.timestamp.isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.DAYS)) }) { notification ->
+                    NotificationCard(notification = notification)
+                }
+                item {
+                    SectionHeader(stringResource(R.string.yesterday))
+                }
+                items(filteredNotifications.filter {
+                    it.timestamp.isAfter(LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).minusDays(1)) &&
+                            it.timestamp.isBefore(LocalDateTime.now().truncatedTo(ChronoUnit.DAYS))
+                }) { notification ->
+                    NotificationCard(notification = notification)
+                }
+               /* item {
+                    SectionHeader(stringResource(R.string.earlier))
+                }
+                items(filteredNotifications.filter {
+                    it.timestamp.isBefore(LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).minusDays(2))
+                }) { notification ->
+                    NotificationCard(notification = notification)
+                }*/
             }
         }
     }
@@ -131,7 +174,7 @@ fun NotificationCard(notification: Notification) {
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(25.dp))
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(16.dp)) {
             Image(
@@ -143,8 +186,8 @@ fun NotificationCard(notification: Notification) {
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = notification.title, fontSize = 20.sp, color = Color.Black)
-                Text(text = notification.message, fontSize = 16.sp, color = Color.Gray)
+                Text(text = notification.title, fontSize = 16.sp, color = Color.Black)
+                Text(text = notification.message, fontSize = 14.sp, color = Color.Gray)
             }
             if (!notification.isRead) {
                 Box(
@@ -167,7 +210,7 @@ fun SectionHeader(title: String) {
     ) {
         Text(
             text = title,
-            fontSize = 24.sp,
+            fontSize = 20.sp,
             color = Color.Black,
             modifier = Modifier.padding(vertical = 8.dp)
         )

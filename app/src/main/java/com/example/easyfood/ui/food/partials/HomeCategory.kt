@@ -53,7 +53,7 @@ fun HomeCategory(
     LazyRow(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp),
+
 
         ) {
         items(categoryItems) { meal ->
@@ -85,7 +85,7 @@ fun HomeCategory(
                         Spacer(modifier = Modifier.height(60.dp))
                         Text(
                             text = truncateText(meal.strMeal ?: "", 12),
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
@@ -99,8 +99,7 @@ fun HomeCategory(
                             Column {
                                 Text(
                                     text = stringResource(id = R.string.time_label),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.Light,
+                                    style = MaterialTheme.typography.labelSmall,
                                     modifier = Modifier
                                         .align(Alignment.Start)
                                         .padding(start = 8.dp)
@@ -108,21 +107,20 @@ fun HomeCategory(
 
                                 Text(
                                     text = stringResource(id = R.string.time_value),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.Medium,
+                                    style = MaterialTheme.typography.bodySmall,
                                     modifier = Modifier
                                         .align(Alignment.Start)
                                         .padding(start = 8.dp)
                                 )
                             }
-                            Icon(
+                           /* Icon(
                                 imageVector = Icons.Default.AddCircle,
                                 contentDescription = stringResource(id = R.string.save),
                                 tint = Color.Black,
                                 modifier = Modifier
                                     .size(30.dp)
                                     .padding(8.dp)
-                            )
+                            )*/
                         }
                     }
                 }

@@ -13,9 +13,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
     object Start : Screen("start", "Start", Icons.Default.Home)
-    object Recipes : Screen("recipes", "Recipes", Icons.Default.Home)
-    object Favorites : Screen("favorites", "Favorites", Icons.Default.Favorite)
-    object Category : Screen("categories", "Category", Icons.Default.List)
+    object Recipes : Screen("recipes", "Home", Icons.Default.Home)
+    object Favorites : Screen("favorites", "Favor", Icons.Default.Favorite)
+    object Category : Screen("categories", "Categ...", Icons.Default.List)
     object Detail : Screen("detail", "Detail", Icons.Default.List)
     object PopularDetail : Screen("popular/{idMeal}", "Popular", Icons.Default.List)
     object CategoryDetailScreen : Screen("category_detail/{categoryName}", "CategoriesDetail", Icons.Default.List)
@@ -25,6 +25,8 @@ sealed class Screen(val route: String, val label: String, val icon: ImageVector)
     object Profile : Screen("profile", "profile", Icons.Default.AccountCircle)
     object Create : Screen("create", "create", Icons.Default.AccountCircle)
     object Notification : Screen("notification", "notific...", Icons.Default.Notifications)
+
+    object FavoriteDetail : Screen("favoriteDetail/{idMeal}", "favoriteDetail", Icons.Default.Favorite)
 
    /* fun withArgs(vararg args: String): String {
         return buildString {

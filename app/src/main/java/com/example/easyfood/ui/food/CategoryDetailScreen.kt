@@ -10,9 +10,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +36,11 @@ import com.example.easyfood.ui.food.store.RecipeViewModel
 import com.example.easyfood.ui.food.store.SharedViewModel
 import com.example.easyfood.utils.truncateText
 
+import androidx.compose.material3.TopAppBar
+import androidx.compose.ui.layout.VerticalAlignmentLine
+import androidx.compose.ui.unit.sp
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryDetailScreen(
     categoryName: String,
@@ -47,83 +54,98 @@ fun CategoryDetailScreen(
 
     val categoryItems by recipeViewModel.categoryItems.collectAsState(emptyList())
 
-    // UI for Category Detail Screen
-    IconButton(onClick = { navController.popBackStack() }) {
-        Icon(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = "Back Icon",
-            tint = Color.Black
-        )
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text(
-            text = " $categoryName (${categoryItems.size.toString()})",
-            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-            modifier = Modifier.clip(RoundedCornerShape(10.dp)).align(Alignment.CenterHorizontally).padding(bottom = 16.dp),
-            color = Color.Black
-        )
+    Column(modifier = Modifier.fillMaxSize()) {
+         Row(modifier = Modifier.padding(0.dp), verticalAlignment = Alignment.CenterVertically) {
+             TopAppBar(
+                 title = {
+                     Text(
+                         text = "$categoryName (${categoryItems.size})",
+                         style = MaterialTheme.typography.headlineLarge,
+                         modifier = Modifier
+                             .clip(RoundedCornerShape(10.dp)),
+                         color = Color.Black,
+                         fontSize = 20.sp,
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(8.dp),
+                         )
+                 },
+                 navigationIcon = {
+                     IconButton(onClick = { navController.popBackStack() }) {
+                         Icon(
+                             imageVector = Icons.Default.ArrowBack,
+                             contentDescription = "Back Icon",
+                             tint = Color.Black
+                         )
+                     }
+                 },
+                 modifier = Modifier.height(65.dp)
+
+             )
+         }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(0.dp)
+                .padding(16.dp)
         ) {
-            items(categoryItems) { meal ->
-                Surface(
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .clickable {
-                            //sharedViewModel.selectMeal(meal)
-
-                            navController.navigate("popular/${meal.idMeal}")
-                        }
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(8.dp)
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(8.dp),
+            ) {
+                items(categoryItems) { meal ->
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
+                            .clickable {
+                                navController.navigate("popular/${meal.idMeal}")
+                            }
                     ) {
-                        SubcomposeAsyncImage(
-                            model = meal.strMealThumb ,
-                            contentDescription = null,
-                            loading = {
-                                Box(
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    CircularProgressIndicator()
-                                }
-                            },
-                            error = {
-                                Box(
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text("Error")
-                                }
-                            },
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(16.dp))
-                                .width(120.dp)
-                                .height(100.dp)
-                                .background(Color.LightGray),
-                            contentScale = ContentScale.Crop
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = truncateText(meal.strMeal ?: "", 10),
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
-                        )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.padding(8.dp)
+                        ) {
+                            SubcomposeAsyncImage(
+                                model = meal.strMealThumb,
+                                contentDescription = null,
+                                loading = {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        CircularProgressIndicator()
+                                    }
+                                },
+                                error = {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text("Error")
+                                    }
+                                },
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .width(120.dp)
+                                    .height(100.dp)
+                                    .background(Color.LightGray),
+                                contentScale = ContentScale.Crop
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = truncateText(meal.strMeal ?: "", 10),
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.Medium,
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
+

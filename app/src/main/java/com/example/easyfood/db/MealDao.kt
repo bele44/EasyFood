@@ -18,4 +18,7 @@ interface MealDao {
 
     @Query("SELECT * from mealInformation")
     fun getAllMeals(): Flow<List<Meal>>
+
+    @Query("SELECT * from mealInformation WHERE idMeal = :id")
+    fun getMealById(id: String): Flow<Meal?>
 }

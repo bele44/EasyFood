@@ -12,10 +12,14 @@ suspend fun upsertMeal(meal: Meal)
 
 suspend fun deleteMeal(meal: Meal)
 
+    fun getMealStream(id: String): Flow<Meal?>
+
 }
 
 class OfflineMealsRepository @Inject constructor(private val mealDao: MealDao) : OfflineRepository {
     override fun getAllMeals(): Flow<List<Meal>> = mealDao.getAllMeals()
     override suspend fun upsertMeal(meal: Meal) = mealDao.upsertMeal(meal)
     override suspend fun deleteMeal(meal: Meal) = mealDao.deleteMeal(meal)
+
+    override fun getMealStream(id: String): Flow<Meal?> = mealDao.getMealById(id)
 }

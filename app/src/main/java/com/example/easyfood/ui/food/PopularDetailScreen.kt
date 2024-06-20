@@ -19,6 +19,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.LaunchedEffect
@@ -54,12 +55,12 @@ fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hilt
     val selectedMeal by recipeViewModel.mealDetails.collectAsState(null)
 
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+
         topBar = {
-            LargeTopAppBar(
+            TopAppBar(
 
                 title = {
-                    Row(modifier = Modifier.padding(8.dp),
+                    Row(modifier = Modifier.padding(0.dp),
                         verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(
@@ -72,18 +73,38 @@ fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hilt
                             text = selectedMeal?.strMeal?: "Detail Screen",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(bottom = 1.dp)
+                            modifier = Modifier.padding(bottom = 1.dp),
+                            style = MaterialTheme.typography.headlineLarge,
                         )
                     }
                         },
-                scrollBehavior = scrollBehavior
+                modifier = Modifier.height(70.dp)
             )
         },
-        content = { innerPadding ->
-            Box(modifier = Modifier.fillMaxSize()) {
+        floatingActionButton = {
+            selectedMeal?.strYoutube?.let { youtubeUrl ->
+                FloatingActionButton(
+                    onClick = {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
+                        context.startActivity(intent)
+                    },
+                    modifier = Modifier.size(48.dp),
+                    containerColor = Color.Red
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.youtube),
+                        contentDescription = stringResource(R.string.youtube),
+                        tint = Color.White
+                    )
+                }
+            }
+        }
+    )
+        { innerPadding ->
+
                 LazyColumn(
                     contentPadding = innerPadding,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary)
                 ) {
                     item {
                         SubcomposeAsyncImage(
@@ -99,14 +120,7 @@ fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hilt
                                     CircularProgressIndicator()
                                 }
                             },
-                            error = {
-                                Box(
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(stringResource(R.string.error))
-                                }
-                            },
+
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -120,42 +134,50 @@ fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hilt
                                 .fillMaxWidth()
                                 .padding(16.dp),
                             horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+
                         ) {
                             Row(
                                 modifier = Modifier.weight(1f),
                                 horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Row {
                                     Icon(Icons.Default.List, contentDescription = stringResource(R.string.category_icon))
-                                    Text(
-                                        text = stringResource(R.string.category) + ": ${selectedMeal?.strCategory}",
-                                        modifier = Modifier.padding(start = 4.dp)
-                                    )
+                                    Column {
+                                        Text(
+                                            text = stringResource(R.string.category) ,
+                                            modifier = Modifier.padding(start = 4.dp)
+                                        )
+                                        Text(" ${selectedMeal?.strCategory}")
+                                    }
+
                                 }
-                                Row {
+                                Row{
                                     Icon(Icons.Default.LocationOn, contentDescription = stringResource(R.string.location_icon))
-                                    Text(
-                                        text = stringResource(R.string.area) + ": ${selectedMeal?.strArea}",
-                                        modifier = Modifier.padding(start = 4.dp)
-                                    )
+                                    Column {
+                                        Text(
+                                            text = stringResource(R.string.area) ,
+                                            modifier = Modifier.padding(start = 4.dp)
+                                        )
+                                        Text(" ${selectedMeal?.strArea}")
+                                    }
+
                                 }
                             }
                             Spacer(modifier = Modifier.width(4.dp))
-                            FloatingActionButton(
+                            IconButton(
                                 onClick = {
                                     selectedMeal?.let { meal ->
                                         offlineViewModel.upsertMeal(meal)
                                         shownToast(context, "Meal Saved")
                                     } ?: shownToast(context, "No meal selected")
-                                },
-                                modifier = Modifier.size(48.dp),
-                                containerColor = Color.Red
+                                }
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.Favorite,
+                                    modifier = Modifier.size(35.dp),
+                                    imageVector = Icons.Default.FavoriteBorder,
                                     contentDescription = stringResource(R.string.favorite),
-                                    tint = Color.White
+                                    tint = Color.Black
                                 )
                             }
                         }
@@ -178,29 +200,9 @@ fun PopularDetailScreen(idMeal: String?, recipeViewModel: RecipeViewModel = hilt
                         }
                     }
                 }
-                selectedMeal?.strYoutube?.let { youtubeUrl ->
-                    FloatingActionButton(
-                        onClick = {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
-                            context.startActivity(intent)
-                        },
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(16.dp)
-                            .size(48.dp),
-                        containerColor = Color.Red
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.youtube),
-                            contentDescription =  stringResource(R.string.youtube),
-                            tint = Color.White
-                        )
-                    }
-                }
+
             }
         }
-    )
-}
 fun shownToast(context: Context, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }

@@ -79,13 +79,13 @@
         <string name="na">N/A</string>
 
     <string name="my_profile">My Profile</string>
-    <string name="edit_profile">Edit Profile</string>
+    <string name="add_recipe">Add Recipe</string>
     <string name="hello_cooking">Hello world! I love cooking so much</string>
-    <string name="video_creator_bio">from Italy 🇮🇹 Video Creator Bio</string>
+    <string name="video_creator_bio">from Habesha ET Video Creator Bio</string>
     <string name="tab_videos">Videos</string>
     <string name="tab_recipes">Recipes</string>
     <string name="tab_video">Video</string>
-    <string name="profile_name">Alessandra Blair</string>
+    <string name="profile_name">Bele Hagos</string>
 
     <string name="saved_recipes">Saved recipes</string>
 
@@ -116,5 +116,12 @@
     <string name="views_time"> views | </string>
 
     <string name="by_author">by bele hagos</string>
+    <string name="confirm_delete_title">Delete Meal</string>
+    <string name="confirm_delete_message">Are you sure you want to delete this meal?</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 
+    <string name="earlier">Earlier</string>
+    <string name="meal">Meal</string>
+    <string name="time">Time</string>
 </resources>

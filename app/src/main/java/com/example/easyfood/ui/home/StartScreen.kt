@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.MaterialTheme
 import com.example.easyfood.ui.navigation.Screen
 import com.example.easyfood.R
+import com.example.easyfood.ui.theme.poppinsFontFamily
 
 @Composable
 fun StartScreen(navController: NavController) {
@@ -106,7 +107,8 @@ fun StartScreen(navController: NavController) {
                     text = stringResource(id = R.string.find_best_recipe),
                     color = Color.White,
                     fontSize = fontSizeMedium,
-                    modifier = Modifier.padding(top = 8.dp)
+                    modifier = Modifier.padding(top = 8.dp),
+                    fontFamily = poppinsFontFamily
                 )
             }
             Box(
@@ -118,7 +120,7 @@ fun StartScreen(navController: NavController) {
                 Button(
                     onClick = { navController.navigate(Screen.Recipes.route) },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
+                        containerColor = MaterialTheme.colorScheme.error
                     ),
                     shape = RoundedCornerShape(8.dp)
                 ) {

@@ -1,10 +1,11 @@
 package com.example.easyfood.ui.food
+
+import android.icu.text.ListFormatter.Width
 import android.net.Uri
 import android.widget.VideoView
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -22,11 +23,13 @@ import androidx.navigation.NavController
 import com.example.easyfood.R
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeCreation(navController: NavController) {
     var videoLink by remember { mutableStateOf(TextFieldValue("")) }
@@ -43,8 +46,19 @@ fun RecipeCreation(navController: NavController) {
         }
     }
 
+    val textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
+        focusedBorderColor = Color.Black,
+        unfocusedBorderColor = Color.Gray,
+        focusedLabelColor = Color.Black,
+        unfocusedLabelColor = Color.Black,
+        cursorColor = Color.Black
+    )
+
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primary)
+        ,
         contentPadding = PaddingValues(16.dp)
     ) {
         item {
@@ -72,7 +86,7 @@ fun RecipeCreation(navController: NavController) {
         item {
             Text(
                 text = stringResource(R.string.create_recipe),
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -98,30 +112,38 @@ fun RecipeCreation(navController: NavController) {
         }
 
         item {
-            Button(onClick = { filePickerLauncher.launch("video/*") }) {
+            Button(onClick = { filePickerLauncher.launch("video/*") }, modifier = Modifier
+                .padding(8.dp)
+                .width(140.dp)
+                .height(40.dp),
+                colors = ButtonDefaults.buttonColors(Color.Red)) {
                 Text(text = stringResource(R.string.select_video))
             }
         }
 
         item {
-            BasicTextField(
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.FavoriteBorder,
+                    contentDescription = stringResource(R.string.meal_name),
+                    tint = Color.Black,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(stringResource(R.string.meal),)
+                Spacer(modifier = Modifier.width(16.dp))
+            OutlinedTextField(
                 value = mealName,
                 onValueChange = { mealName = it },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
-                    .border(1.dp, Color.Gray)
-                    .padding(8.dp),
-                decorationBox = { innerTextField ->
-                    if (mealName.text.isEmpty()) {
-                        Text(
-                            text = stringResource(R.string.meal_name),
-                            color = Color.Gray
-                        )
-                    }
-                    innerTextField()
-                }
+                    .padding(vertical = 0.dp),
+                label = { Text(text = stringResource(R.string.meal_name), color = Color.LightGray) },
+                shape = RoundedCornerShape(8.dp),
+                colors = textFieldColors
             )
+        }
         }
 
         item {
@@ -136,26 +158,18 @@ fun RecipeCreation(navController: NavController) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(stringResource(R.string.serves))
                     Spacer(modifier = Modifier.width(8.dp))
-                    BasicTextField(
+                    OutlinedTextField(
                         value = serves,
                         onValueChange = { serves = it },
                         modifier = Modifier
                             .weight(1f)
-                            .padding(8.dp)
-                            .border(1.dp, Color.Gray)
-                            .padding(8.dp),
-                        decorationBox = { innerTextField ->
-                            if (serves.text.isEmpty()) {
-                                Text(
-                                    text = stringResource(R.string.enter_serves),
-                                    color = Color.Gray
-                                )
-                            }
-                            innerTextField()
-                        }
+                            .padding(vertical = 0.dp),
+                        label = { Text(text = stringResource(R.string.enter_serves), color  = Color.LightGray) },
+                        shape = RoundedCornerShape(8.dp),
+                        colors = textFieldColors
                     )
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = Icons.Default.CheckCircle,
@@ -163,26 +177,18 @@ fun RecipeCreation(navController: NavController) {
                         tint = Color.Black,
                         modifier = Modifier.size(24.dp)
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource(R.string.cook_time))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    BasicTextField(
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(stringResource(R.string.time))
+                    Spacer(modifier = Modifier.width(20.dp))
+                    OutlinedTextField(
                         value = cookTime,
                         onValueChange = { cookTime = it },
                         modifier = Modifier
                             .weight(1f)
-                            .padding(8.dp)
-                            .border(1.dp, Color.Gray)
-                            .padding(8.dp),
-                        decorationBox = { innerTextField ->
-                            if (cookTime.text.isEmpty()) {
-                                Text(
-                                    text = stringResource(R.string.enter_cook_time),
-                                    color = Color.Gray
-                                )
-                            }
-                            innerTextField()
-                        }
+                            .padding(vertical = 0.dp),
+                        label = { Text(text = stringResource(R.string.enter_cook_time), color = Color.LightGray) },
+                        shape = RoundedCornerShape(8.dp),
+                        colors = textFieldColors
                     )
                 }
             }
@@ -199,7 +205,7 @@ fun RecipeCreation(navController: NavController) {
         items(ingredients.size) { index ->
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    BasicTextField(
+                    OutlinedTextField(
                         value = ingredients[index].first,
                         onValueChange = { newValue ->
                             ingredients = ingredients.toMutableList().also {
@@ -208,21 +214,14 @@ fun RecipeCreation(navController: NavController) {
                         },
                         modifier = Modifier
                             .weight(1f)
-                            .padding(8.dp)
-                            .border(1.dp, Color.Gray)
-                            .padding(8.dp),
-                        decorationBox = { innerTextField ->
-                            if (ingredients[index].first.text.isEmpty()) {
-                                Text(
-                                    text = stringResource(R.string.item_name),
-                                    color = Color.Gray
-                                )
-                            }
-                            innerTextField()
-                        }
+                            .padding(vertical = 0.dp),
+                        label = { Text(text = stringResource(R.string.item_name), color = Color.LightGray) },
+                        shape = RoundedCornerShape(8.dp),
+                        colors = textFieldColors
                     )
-
-                    BasicTextField(
+                    Spacer(modifier = Modifier.width(8.dp))
+                      
+                    OutlinedTextField(
                         value = ingredients[index].second,
                         onValueChange = { newValue ->
                             ingredients = ingredients.toMutableList().also {
@@ -231,18 +230,10 @@ fun RecipeCreation(navController: NavController) {
                         },
                         modifier = Modifier
                             .weight(1f)
-                            .padding(8.dp)
-                            .border(1.dp, Color.Gray)
-                            .padding(8.dp),
-                        decorationBox = { innerTextField ->
-                            if (ingredients[index].second.text.isEmpty()) {
-                                Text(
-                                    text = stringResource(R.string.amount),
-                                    color = Color.Gray
-                                )
-                            }
-                            innerTextField()
-                        }
+                            .padding(vertical = 0.dp),
+                        label = { Text(text = stringResource(R.string.amount), color = Color.LightGray) },
+                        shape = RoundedCornerShape(8.dp),
+                        colors = textFieldColors
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     IconButton(onClick = {
@@ -263,7 +254,8 @@ fun RecipeCreation(navController: NavController) {
 
         item {
             Button(
-                colors = ButtonDefaults.buttonColors(Color.White),
+                modifier = Modifier.padding(4.dp),
+                colors = ButtonDefaults.buttonColors(Color.LightGray),
                 onClick = {
                     ingredients = ingredients.toMutableList().apply { add(Pair(TextFieldValue(""), TextFieldValue(""))) }
                 }
