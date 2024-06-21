@@ -104,7 +104,7 @@ fun SavedScreen(viewModel: RecipeViewModel = hiltViewModel(), navController: Nav
                 .padding(innerPadding)
                 .background(MaterialTheme.colorScheme.primary)
         ) {
-            TabRow(
+            PrimaryTabRow(
                 selectedTabIndex = pagerState.currentPage,
                 modifier = Modifier.fillMaxWidth(),
                 indicator = { tabPositions ->
@@ -114,7 +114,8 @@ fun SavedScreen(viewModel: RecipeViewModel = hiltViewModel(), navController: Nav
                             .height(4.dp)
                             .background(Color.Red)
                     )
-                }
+                },
+                divider = {}
             ) {
                 tabTitles.forEachIndexed { index, title ->
                     Tab(

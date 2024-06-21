@@ -37,6 +37,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -192,7 +193,7 @@ fun ProfileScreen(viewModel: RecipeViewModel = hiltViewModel(), navController: N
                     .padding(8.dp)
                     .background(MaterialTheme.colorScheme.primary)
             ) {
-                TabRow(
+                PrimaryTabRow(
                     selectedTabIndex = pagerState.currentPage,
                     modifier = Modifier.fillMaxWidth(),
                     indicator = { tabPositions ->
@@ -202,7 +203,8 @@ fun ProfileScreen(viewModel: RecipeViewModel = hiltViewModel(), navController: N
                                 .height(4.dp)
                                 .background(Color.Red)
                         )
-                    }
+                    },
+                    divider = {}
                 ) {
                     tabTitles.forEachIndexed { index, title ->
                         Tab(

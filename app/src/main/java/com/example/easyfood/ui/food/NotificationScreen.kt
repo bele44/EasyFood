@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
@@ -85,7 +86,7 @@ fun NotificationsScreen(navController: NavController) {
 
             ) },
         )
-        TabRow(
+        PrimaryTabRow(
             selectedTabIndex = pagerState.currentPage,
             modifier = Modifier.fillMaxWidth(),
             indicator = { tabPositions ->
@@ -95,7 +96,8 @@ fun NotificationsScreen(navController: NavController) {
                         .height(4.dp)
                         .background(Color.Red)
                 )
-            }
+            },
+                    divider = {}
         ) {
             NotificationTab.values().forEachIndexed { index, tab ->
                 Tab(
