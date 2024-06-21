@@ -7,9 +7,7 @@ import com.example.easyfood.data.OfflineRepository
 import com.example.easyfood.model.Meal
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -29,6 +27,9 @@ class OfflineViewModel @Inject constructor(private val offlineRepository: Offlin
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> get() = _error
 
+    private val _isFavorite = MutableStateFlow<Boolean>(false)
+    val isFavorite: StateFlow<Boolean> get() = _isFavorite
+
     private var lastDeletedMeal: Meal? = null
 
     //
@@ -39,6 +40,7 @@ class OfflineViewModel @Inject constructor(private val offlineRepository: Offlin
         Log.d("OfflineViewModel", "ViewModel initialized, calling getAllMeals")
         getAllMeals()
     }
+
     fun fetchMealDetails(idMeal: String?) {
         idMeal?.let { id ->
             viewModelScope.launch(Dispatchers.IO) {
@@ -50,6 +52,7 @@ class OfflineViewModel @Inject constructor(private val offlineRepository: Offlin
                     .collect { meal ->
                         Log.d("OfflineViewModel", "Meal details fetched: $meal")
                         _offlineMealById.value = meal
+                        checkIfFavorite(id)
                     }
             }
         } ?: run {
@@ -57,6 +60,7 @@ class OfflineViewModel @Inject constructor(private val offlineRepository: Offlin
             _error.value = "Error: idMeal is null"
         }
     }
+
     private fun getAllMeals() {
         viewModelScope.launch(Dispatchers.IO) {
             offlineRepository.getAllMeals()
@@ -76,7 +80,7 @@ class OfflineViewModel @Inject constructor(private val offlineRepository: Offlin
             try {
                 offlineRepository.upsertMeal(meal)
                 _upsertedMeal.value = meal
-                // Update the meal list after upserting
+                checkIfFavorite(meal.idMeal)
                 getAllMeals()
             } catch (e: Exception) {
                 reportError("Error upserting meal: ${e.message}")
@@ -90,11 +94,20 @@ class OfflineViewModel @Inject constructor(private val offlineRepository: Offlin
                 offlineRepository.deleteMeal(meal)
                 lastDeletedMeal = meal
                 _deletedMeal.value = meal
-                // Update the meal list after deletion
+                checkIfFavorite(meal.idMeal)
                 getAllMeals()
             } catch (e: Exception) {
                 reportError("Error deleting meal: ${e.message}")
             }
+        }
+    }
+
+    private fun checkIfFavorite(idMeal: String) {
+        viewModelScope.launch {
+            offlineRepository.getMealStream(idMeal)
+                .collect { meal ->
+                    _isFavorite.value = meal != null
+                }
         }
     }
 
@@ -115,7 +128,7 @@ class OfflineViewModel @Inject constructor(private val offlineRepository: Offlin
         clearError()
     }
 
-    fun clearDeletedMeal(){
+    fun clearDeletedMeal() {
         _deletedMeal.value = null
     }
 }
